@@ -6,6 +6,7 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using NUnit.Framework;
+using System.Reflection;
 
 namespace ConfigTest.Integration
 {
@@ -40,12 +41,13 @@ namespace ConfigTest.Integration
         public TestServerFixture()
         {
             var config = new ConfigurationBuilder()
-                .SetBasePath(GetContentRootPath())
+                .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             var builder = new WebHostBuilder()
-               .UseContentRoot(@"C:\Users\clementoniovosa\Desktop\ConfigTest\ConfigTest")
+               //.UseContentRoot(@"C:\Users\clementoniovosa\Desktop\ConfigTest\ConfigTest")
+               .UseContentRoot(GetContentRootPath())
                .UseEnvironment("Development").
                UseConfiguration(config)
                .UseStartup<Startup>();  // Uses Start up class from your API Host project to configure the test server
@@ -57,7 +59,10 @@ namespace ConfigTest.Integration
 
         private string GetContentRootPath()
         {
-            return Directory.GetCurrentDirectory();
+            var testProjectPath = Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Directory.GetCurrentDirectory())));
+            var projectBasePath = Path.GetDirectoryName(testProjectPath);
+            var fullPath = $@"{projectBasePath}\ConfigTest";
+            return fullPath;
         }
 
         public void Dispose()
