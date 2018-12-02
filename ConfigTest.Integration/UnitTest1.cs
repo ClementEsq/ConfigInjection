@@ -48,8 +48,8 @@ namespace ConfigTest.Integration
             var builder = new WebHostBuilder()
                //.UseContentRoot(@"C:\Users\clementoniovosa\Desktop\ConfigTest\ConfigTest")
                .UseContentRoot(GetContentRootPath())
-               .UseEnvironment("Development").
-               UseConfiguration(config)
+               .UseEnvironment("Development")
+               .UseConfiguration(config)
                .UseStartup<Startup>();  // Uses Start up class from your API Host project to configure the test server
 
             _testServer = new TestServer(builder);
